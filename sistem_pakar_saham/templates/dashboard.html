@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - StockExpert ID{% endblock %}
+{% block content %}
+<div class="dashboard-container">
+    <div class="page-header">
+        <h1><i class="fas fa-chart-pie"></i> Dashboard Saham Indonesia</h1>
+        <p>Pilih saham untuk dianalisis oleh sistem pakar kami</p>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon blue"><i class="fas fa-database"></i></div>
+            <div class="stat-info">
+                <h3>{{ stocks|length }}</h3>
+                <p>Saham Tersedia</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green"><i class="fas fa-robot"></i></div>
+            <div class="stat-info">
+                <h3>7</h3>
+                <p>Indikator AI</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon purple"><i class="fas fa-bolt"></i></div>
+            <div class="stat-info">
+                <h3>C++</h3>
+                <p>Engine Speed</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-header">
+        <h2><i class="fas fa-list"></i> Daftar Saham</h2>
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchStock" placeholder="Cari kode atau nama saham...">
+        </div>
+    </div>
+
+    <div class="stock-grid" id="stockGrid">
+        {% for stock in stocks %}
+        <div class="stock-card" data-code="{{ stock.code }}" data-name="{{ stock.name }}">
+            <div class="stock-header">
+                <div class="stock-code">{{ stock.code }}</div>
+                <div class="stock-sector">{{ stock.sector }}</div>
+            </div>
+            <div class="stock-name">{{ stock.name }}</div>
+            <div class="stock-price">
+                <span class="price-label">Harga</span>
+                <span class="price-value">Rp {{ "{:,.0f}".format(stock.price) }}</span>
+            </div>
+            <div class="stock-metrics">
+                <div class="metric">
+                    <span class="metric-label">PE</span>
+                    <span class="metric-value">{{ stock.pe_ratio }}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">PBV</span>
+                    <span class="metric-value">{{ stock.pbv }}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">ROE</span>
+                    <span class="metric-value">{{ stock.roe }}%</span>
+                </div>
+            </div>
+            <a href="{{ url_for('analyze', stock_id=stock.id) }}" class="btn-analyze">
+                <i class="fas fa-microscope"></i> Analisis AI
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

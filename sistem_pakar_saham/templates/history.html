@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Riwayat - StockExpert ID{% endblock %}
+{% block content %}
+<div class="history-container">
+    <div class="page-header">
+        <h1><i class="fas fa-history"></i> Riwayat Analisis</h1>
+        <p>Semua rekomendasi yang pernah kamu generate</p>
+    </div>
+
+    {% if records %}
+    <div class="history-table-wrapper">
+        <table class="history-table">
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Kode</th>
+                    <th>Nama Saham</th>
+                    <th>Sektor</th>
+                    <th>Rekomendasi</th>
+                    <th>Confidence</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td>{{ record.created_at }}</td>
+                    <td><strong>{{ record.code }}</strong></td>
+                    <td>{{ record.name }}</td>
+                    <td><span class="sector-tag">{{ record.sector }}</span></td>
+                    <td>
+                        <span class="rec-tag rec-{{ record.recommendation.lower() }}">
+                            {{ record.recommendation }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="confidence-mini">
+                            <div class="mini-bar">
+                                <div class="mini-fill" style="width: {{ record.confidence }}%"></div>
+                            </div>
+                            <span>{{ record.confidence }}%</span>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-inbox"></i>
+        <h3>Belum ada riwayat</h3>
+        <p>Mulai analisis saham di dashboard untuk melihat riwayat di sini.</p>
+        <a href="{{ url_for('dashboard') }}" class="btn-primary">
+            <i class="fas fa-chart-line"></i> Mulai Analisis
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
